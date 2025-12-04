@@ -32,7 +32,7 @@ export default function Register() {
 
 	async function onSubmit(data: FormData) {
 		try {
-			await api.post("/auth/register", data);
+			await api.post("/auth/signup", data);
 			toast.success("Registration successful! Please log in.");
 			navigate("/login");
 		} catch (error: unknown) {

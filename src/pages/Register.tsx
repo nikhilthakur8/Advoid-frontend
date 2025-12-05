@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import api from "@/api/api";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 type FormData = {
 	name: string;
@@ -29,12 +31,15 @@ export default function Register() {
 		formState: { errors },
 	} = useForm<FormData>();
 	const navigate = useNavigate();
-
+	const [loading, setLoading] = useState(false);
+	const urlParams = new URLSearchParams(window.location.search);
+	const redirectUrl = urlParams.get("redirect") || "/dashboard";
 	async function onSubmit(data: FormData) {
+		setLoading(true);
 		try {
 			await api.post("/auth/signup", data);
 			toast.success("Registration successful! Please log in.");
-			navigate("/login");
+			navigate(redirectUrl);
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {
 				console.error("Registration failed:", error.response?.data);
@@ -47,6 +52,8 @@ export default function Register() {
 				console.error("Registration failed:", error);
 				toast.error("Registration failed. Please try again.");
 			}
+		} finally {
+			setLoading(false);
 		}
 	}
 	return (
@@ -117,8 +124,16 @@ export default function Register() {
 							)}
 						</div>
 
-						<Button type="submit" className="w-full mt-2">
-							Register
+						<Button
+							type="submit"
+							className="w-full mt-2"
+							disabled={loading}
+						>
+							{loading ? (
+								<Loading text="Registering..." />
+							) : (
+								"Register"
+							)}
 						</Button>
 					</div>
 				</form>

@@ -26,6 +26,7 @@ import {
 import Loading from "./Loading";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { Skeleton } from "./ui/skeleton";
 
 type DenyListItem = {
 	domain: string;
@@ -37,14 +38,18 @@ export default function DenyList() {
 	const [denyList, setDenyList] = useState<DenyListItem[]>([]);
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [intialLoading, setIntialLoading] = useState(true);
 	const [domain, setDomain] = useState("");
 
 	async function fetchDenyList() {
+		setIntialLoading(true);
 		try {
 			const response = await api.get("user/deny-list");
 			setDenyList(response.data.denyList);
 		} catch (error) {
 			console.log("Error fetching deny list:", error);
+		} finally {
+			setIntialLoading(false);
 		}
 	}
 	useEffect(() => {
@@ -137,7 +142,7 @@ export default function DenyList() {
 	}
 
 	return (
-		<div className="max-w-3xl min-h-svh w-full mx-auto py-10 space-y-8">
+		<div className="max-w-3xl w-full mx-auto py-10 space-y-8">
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-semibold">My Deny List</h1>
 				<Button
@@ -148,8 +153,20 @@ export default function DenyList() {
 					Add Domain
 				</Button>
 			</div>
-
-			{denyList.length === 0 ? (
+			{intialLoading ? (
+				<div className="space-y-3">
+					{[1, 2, 3, 4].map((i) => (
+						<div
+							key={i}
+							className="flex items-center justify-between border p-4 rounded-lg"
+						>
+							<Skeleton className="h-5 w-10" /> {/* Index */}
+							<Skeleton className="h-5 w-40" /> {/* Domain */}
+							<Skeleton className="h-8 w-24" /> {/* Actions */}
+						</div>
+					))}
+				</div>
+			) : denyList.length === 0 ? (
 				<p className="text-muted-foreground text-sm">
 					No denied items found.
 				</p>
@@ -169,31 +186,27 @@ export default function DenyList() {
 						{denyList.map((item, index) => (
 							<TableRow key={item.id} className="*:px-4 *:py-3">
 								<TableCell>{index + 1}</TableCell>
-
 								<TableCell className="font-medium">
 									*.{item.domain}
 								</TableCell>
-
 								<TableCell className="text-right space-x-2">
 									<Button
 										disabled={loading}
 										variant={
 											item.active ? "outline" : "default"
 										}
-										className="hover:scale-105 cursor-pointer"
-										size="sm"
 										onClick={() =>
 											handleUpdate(item.id, item.active)
 										}
+										size="sm"
 									>
 										{item.active ? "Disable" : "Enable"}
 									</Button>
 									<Button
 										disabled={loading}
 										variant="destructive"
-										className="hover:scale-105 cursor-pointer"
-										size="sm"
 										onClick={() => handleDelete(item.id)}
+										size="sm"
 									>
 										Delete
 									</Button>
@@ -203,6 +216,8 @@ export default function DenyList() {
 					</TableBody>
 				</Table>
 			)}
+
+			
 
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogContent className="max-w-md text-sm md:text-base">

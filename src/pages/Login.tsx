@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import api from "@/api/api";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 type FormData = {
 	email: string;
@@ -28,14 +30,17 @@ export default function Login() {
 		formState: { errors },
 	} = useForm<FormData>();
 	const navigate = useNavigate();
-
+	const urlParams = new URLSearchParams(window.location.search);
+	const redirectUrl = urlParams.get("redirect") || "/dashboard";
+	const [loading, setLoading] = useState(false);
 	const onSubmit = async (data: FormData) => {
+		setLoading(true);
 		try {
 			const response = await api.post("/auth/login", data);
 			const token = response.data.token;
 			localStorage.setItem("ADVOID_SESSION", token);
 			toast.success("Login successful!");
-			navigate("/dashboard");
+			navigate(redirectUrl);
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {
 				console.error("Login failed:", error.response?.data);
@@ -48,6 +53,8 @@ export default function Login() {
 				console.error("An unexpected error occurred:", error);
 				toast.error("An unexpected error occurred.");
 			}
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -97,8 +104,16 @@ export default function Login() {
 							)}
 						</div>
 
-						<Button type="submit" className="w-full mt-2">
-							Login
+						<Button
+							type="submit"
+							className="w-full mt-2"
+							disabled={loading}
+						>
+							{loading ? (
+								<Loading text="Logging in..." />
+							) : (
+								"Login"
+							)}
 						</Button>
 					</div>
 				</form>

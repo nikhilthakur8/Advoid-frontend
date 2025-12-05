@@ -59,7 +59,8 @@ export default function Login() {
 	};
 
 	return (
-		<Card className="relative w-[400px] overflow-hidden">
+		<div className="flex items-center justify-center min-h-svh">
+			<Card className="relative w-[400px] overflow-hidden">
 			<CardHeader>
 				<CardTitle>Login</CardTitle>
 				<CardDescription>
@@ -125,5 +126,6 @@ export default function Login() {
 				</Button>
 			</CardFooter>
 		</Card>
+		</div>
 	);
 }

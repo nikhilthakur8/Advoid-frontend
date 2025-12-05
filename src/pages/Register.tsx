@@ -57,93 +57,95 @@ export default function Register() {
 		}
 	}
 	return (
-		<Card className="relative w-[400px] overflow-hidden">
-			<CardHeader>
-				<CardTitle>Sign Up</CardTitle>
-				<CardDescription>
-					Create an account to get started.
-				</CardDescription>
-			</CardHeader>
+		<div className="flex items-center justify-center min-h-svh">
+			<Card className="relative w-[400px] overflow-hidden">
+				<CardHeader>
+					<CardTitle>Sign Up</CardTitle>
+					<CardDescription>
+						Create an account to get started.
+					</CardDescription>
+				</CardHeader>
 
-			<CardContent>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className="grid w-full items-center gap-4">
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="name">Full Name</Label>
-							<Input
-								id="name"
-								type="text"
-								placeholder="Enter your full name"
-								{...register("name", {
-									required: "Full name is required",
-								})}
-							/>
-							{errors.name && (
-								<span className="text-red-500 text-sm">
-									{errors.name.message}
-								</span>
-							)}
+				<CardContent>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<div className="grid w-full items-center gap-4">
+							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="name">Full Name</Label>
+								<Input
+									id="name"
+									type="text"
+									placeholder="Enter your full name"
+									{...register("name", {
+										required: "Full name is required",
+									})}
+								/>
+								{errors.name && (
+									<span className="text-red-500 text-sm">
+										{errors.name.message}
+									</span>
+								)}
+							</div>
+
+							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="email">Email</Label>
+								<Input
+									id="email"
+									type="email"
+									placeholder="Enter your email"
+									{...register("email", {
+										required: "Email is required",
+									})}
+								/>
+								{errors.email && (
+									<span className="text-red-500 text-sm">
+										{errors.email.message}
+									</span>
+								)}
+							</div>
+
+							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="password">Password</Label>
+								<Input
+									id="password"
+									type="password"
+									placeholder="Choose a password"
+									{...register("password", {
+										required: "Password is required",
+										minLength: {
+											value: 6,
+											message:
+												"Password must be at least 6 characters",
+										},
+									})}
+								/>
+								{errors.password && (
+									<span className="text-red-500 text-sm">
+										{errors.password.message}
+									</span>
+								)}
+							</div>
+
+							<Button
+								type="submit"
+								className="w-full mt-2"
+								disabled={loading}
+							>
+								{loading ? (
+									<Loading text="Registering..." />
+								) : (
+									"Register"
+								)}
+							</Button>
 						</div>
+					</form>
+				</CardContent>
 
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="email">Email</Label>
-							<Input
-								id="email"
-								type="email"
-								placeholder="Enter your email"
-								{...register("email", {
-									required: "Email is required",
-								})}
-							/>
-							{errors.email && (
-								<span className="text-red-500 text-sm">
-									{errors.email.message}
-								</span>
-							)}
-						</div>
-
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								type="password"
-								placeholder="Choose a password"
-								{...register("password", {
-									required: "Password is required",
-									minLength: {
-										value: 6,
-										message:
-											"Password must be at least 6 characters",
-									},
-								})}
-							/>
-							{errors.password && (
-								<span className="text-red-500 text-sm">
-									{errors.password.message}
-								</span>
-							)}
-						</div>
-
-						<Button
-							type="submit"
-							className="w-full mt-2"
-							disabled={loading}
-						>
-							{loading ? (
-								<Loading text="Registering..." />
-							) : (
-								"Register"
-							)}
-						</Button>
-					</div>
-				</form>
-			</CardContent>
-
-			<CardFooter className="flex justify-center">
-				<Button variant="outline" asChild>
-					<Link to="/login">Already have an account? Login</Link>
-				</Button>
-			</CardFooter>
-		</Card>
+				<CardFooter className="flex justify-center">
+					<Button variant="outline" asChild>
+						<Link to="/login">Already have an account? Login</Link>
+					</Button>
+				</CardFooter>
+			</Card>
+		</div>
 	);
 }

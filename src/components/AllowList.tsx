@@ -13,37 +13,37 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
+import Loading from "./Loading";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
-import Loading from "./Loading";
 
-type DenyListItem = {
+type AllowListItem = {
 	domain: string;
 	id: number;
 	active: boolean;
 };
 
-export default function DenyList() {
-	const [denyList, setDenyList] = useState<DenyListItem[]>([]);
+export default function AllowList() {
+	const [allowList, setAllowList] = useState<AllowListItem[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [addLoading, setAddLoading] = useState(false);
 	const [intialLoading, setIntialLoading] = useState(true);
 	const [domain, setDomain] = useState("");
 
-	async function fetchDenyList() {
+	async function fetchAllowList() {
 		setIntialLoading(true);
 		try {
-			const response = await api.get("user/deny-list");
-			setDenyList(response.data.denyList);
+			const response = await api.get("user/allow-list");
+			setAllowList(response.data.allowList);
 		} catch (error) {
-			console.log("Error fetching deny list:", error);
+			console.log("Error fetching allow list:", error);
 		} finally {
 			setIntialLoading(false);
 		}
 	}
 	useEffect(() => {
-		fetchDenyList();
+		fetchAllowList();
 	}, []);
 
 	async function handleAdd(e: React.FormEvent) {
@@ -52,15 +52,15 @@ export default function DenyList() {
 
 		setAddLoading(true);
 		try {
-			const resp = await api.post("user/deny-list", {
+			const resp = await api.post("user/allow-list", {
 				domain,
 			});
 
 			setDomain("");
-			setDenyList((prev) => [resp.data.data, ...prev]);
+			setAllowList((prev) => [resp.data.data, ...prev]);
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {
-				console.error("Error adding deny item:", error.response?.data);
+				console.error("Error adding allow item:", error.response?.data);
 				toast.error(error.response?.data.message || error.message);
 			} else {
 				console.error("An unexpected error occurred:", error);
@@ -74,12 +74,12 @@ export default function DenyList() {
 	async function handleDelete(id: number) {
 		setLoading(true);
 		try {
-			await api.delete(`user/deny-list/${id}`);
-			setDenyList((prev) => prev.filter((item) => item.id !== id));
+			await api.delete(`user/allow-list/${id}`);
+			setAllowList((prev) => prev.filter((item) => item.id !== id));
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {
 				console.error(
-					"Error deleting deny item:",
+					"Error deleting allow item:",
 					error.response?.data
 				);
 				toast.error(error.response?.data.message || error.message);
@@ -95,17 +95,20 @@ export default function DenyList() {
 	async function handleUpdate(id: number, active: boolean) {
 		setLoading(true);
 		try {
-			await api.patch(`user/deny-list/${id}`, {
+			await api.patch(`user/allow-list/${id}`, {
 				active: !active,
 			});
-			setDenyList((prev) =>
+			setAllowList((prev) =>
 				prev.map((item) =>
 					item.id === id ? { ...item, active: !active } : item
 				)
 			);
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {
-				console.error(error.response?.data);
+				console.error(
+					"Error updating allow item:",
+					error.response?.data
+				);
 				toast.error(error.response?.data.message || error.message);
 			} else {
 				console.error("An unexpected error occurred:", error);
@@ -117,7 +120,7 @@ export default function DenyList() {
 	}
 
 	return (
-		<div className="w-full mx-auto space-y-5">
+		<div className="max-w-3xl w-full mx-auto space-y-5">
 			<div className="flex justify-between items-center">
 				<form
 					onSubmit={(e) => handleAdd(e)}
@@ -147,9 +150,9 @@ export default function DenyList() {
 						</div>
 					))}
 				</div>
-			) : denyList.length === 0 ? (
+			) : allowList.length === 0 ? (
 				<p className="text-muted-foreground text-sm">
-					No denied items found.
+					No allowed items found.
 				</p>
 			) : (
 				<Table className="border w-full text-base ">
@@ -164,7 +167,7 @@ export default function DenyList() {
 					</TableHeader>
 
 					<TableBody>
-						{denyList.map((item, index) => (
+						{allowList.map((item, index) => (
 							<TableRow key={item.id} className="*:px-4 *:py-3">
 								<TableCell>{index + 1}</TableCell>
 								<TableCell className="font-medium">

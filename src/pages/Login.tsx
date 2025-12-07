@@ -17,6 +17,7 @@ import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import Loading from "@/components/Loading";
+import { useUserContext } from "@/context/Context";
 
 type FormData = {
 	email: string;
@@ -30,6 +31,7 @@ export default function Login() {
 		formState: { errors },
 	} = useForm<FormData>();
 	const navigate = useNavigate();
+	const { setUser } = useUserContext();
 	const urlParams = new URLSearchParams(window.location.search);
 	const redirectUrl = urlParams.get("redirect") || "/dashboard";
 	const [loading, setLoading] = useState(false);
@@ -38,6 +40,8 @@ export default function Login() {
 		try {
 			const response = await api.post("/auth/login", data);
 			const token = response.data.token;
+			const userData = response.data.user;
+			setUser(userData);
 			localStorage.setItem("ADVOID_SESSION", token);
 			toast.success("Login successful!");
 			navigate(redirectUrl);
@@ -61,71 +65,73 @@ export default function Login() {
 	return (
 		<div className="flex items-center justify-center min-h-svh">
 			<Card className="relative w-[400px] overflow-hidden">
-			<CardHeader>
-				<CardTitle>Login</CardTitle>
-				<CardDescription>
-					Enter your credentials to access your account.
-				</CardDescription>
-			</CardHeader>
+				<CardHeader>
+					<CardTitle>Login</CardTitle>
+					<CardDescription>
+						Enter your credentials to access your account.
+					</CardDescription>
+				</CardHeader>
 
-			<CardContent>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className="grid w-full items-center gap-4">
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="email">Email</Label>
-							<Input
-								id="email"
-								type="email"
-								placeholder="Enter your email"
-								{...register("email", {
-									required: "Email is required",
-								})}
-							/>
-							{errors.email && (
-								<span className="text-red-500 text-sm">
-									{errors.email.message}
-								</span>
-							)}
+				<CardContent>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<div className="grid w-full items-center gap-4">
+							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="email">Email</Label>
+								<Input
+									id="email"
+									type="email"
+									placeholder="Enter your email"
+									{...register("email", {
+										required: "Email is required",
+									})}
+								/>
+								{errors.email && (
+									<span className="text-red-500 text-sm">
+										{errors.email.message}
+									</span>
+								)}
+							</div>
+
+							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="password">Password</Label>
+								<Input
+									id="password"
+									type="password"
+									placeholder="Enter your password"
+									{...register("password", {
+										required: "Password is required",
+									})}
+								/>
+								{errors.password && (
+									<span className="text-red-500 text-sm">
+										{errors.password.message}
+									</span>
+								)}
+							</div>
+
+							<Button
+								type="submit"
+								className="w-full mt-2"
+								disabled={loading}
+							>
+								{loading ? (
+									<Loading text="Logging in..." />
+								) : (
+									"Login"
+								)}
+							</Button>
 						</div>
+					</form>
+				</CardContent>
 
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								type="password"
-								placeholder="Enter your password"
-								{...register("password", {
-									required: "Password is required",
-								})}
-							/>
-							{errors.password && (
-								<span className="text-red-500 text-sm">
-									{errors.password.message}
-								</span>
-							)}
-						</div>
-
-						<Button
-							type="submit"
-							className="w-full mt-2"
-							disabled={loading}
-						>
-							{loading ? (
-								<Loading text="Logging in..." />
-							) : (
-								"Login"
-							)}
-						</Button>
-					</div>
-				</form>
-			</CardContent>
-
-			<CardFooter className="flex justify-center">
-				<Button variant="outline" asChild>
-					<Link to="/register">Don’t have an account? Register</Link>
-				</Button>
-			</CardFooter>
-		</Card>
+				<CardFooter className="flex justify-center">
+					<Button variant="outline" asChild>
+						<Link to="/register">
+							Don’t have an account? Register
+						</Link>
+					</Button>
+				</CardFooter>
+			</Card>
 		</div>
 	);
 }

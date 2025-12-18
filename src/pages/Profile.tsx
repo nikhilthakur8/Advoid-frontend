@@ -13,7 +13,7 @@ export default function Profile() {
 		navigate("/login");
 	}
 	return (
-		<div className="flex min-h-svh items-center justify-center flex-col">
+		<div className="flex min-h-screen items-center justify-center flex-col">
 			<h1 className="text-2xl font-bold mb-4">Profile Page</h1>
 			<p>Name: {user?.name}</p>
 			<p>Email: {user?.email}</p>

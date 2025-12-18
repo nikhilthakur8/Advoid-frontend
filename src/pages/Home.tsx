@@ -13,16 +13,16 @@ export default function Home() {
 		if (!userId) return;
 
 		navigator.clipboard.writeText(text);
-		toast.info("Copied to clipboard!");
+		toast.success("Copied to clipboard!");
 		setCopied(type);
 
 		setTimeout(() => setCopied(null), 2000);
 	}
 
 	return (
-		<div className="min-h-screen flex items-center justify-center ">
+		<div className="flex min-h-svh items-center justify-center">
 			<div className="w-full max-w-md rounded-xl border bg-background shadow-sm">
-				<h2 className="px-4 py-3 border-b text-xl font-semibold">
+				<h2 className="px-4 py-3 border-b text-sm font-semibold">
 					DNS Endpoints
 				</h2>
 
@@ -30,19 +30,19 @@ export default function Home() {
 					{/* DNS over HTTPS */}
 					<div className="flex items-center justify-between px-4 py-3">
 						<div>
-							<p className="text-sm text-muted-foreground">
+							<p className="text-xs text-muted-foreground">
 								DNS over HTTPS
 							</p>
-							<p className="text-lg font-mono">
+							<p className="text-sm font-mono">
 								https://dns.clouly.in/{userId}
 							</p>
 						</div>
 
 						{copied === "doh" ? (
-							<CopyCheck className="size-5 text-green-500" />
+							<CopyCheck className="size-4 text-green-500" />
 						) : (
 							<Copy
-								className="size-5 cursor-pointer text-muted-foreground hover:text-foreground transition"
+								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
 								onClick={() =>
 									handleCopy(
 										`https://dns.clouly.in/${userId}`,
@@ -56,19 +56,19 @@ export default function Home() {
 					{/* DNS over TLS */}
 					<div className="flex items-center justify-between px-4 py-3">
 						<div>
-							<p className="text-sm text-muted-foreground">
+							<p className="text-xs text-muted-foreground">
 								DNS over TLS
 							</p>
-							<p className="text-lg font-mono">
+							<p className="text-sm font-mono">
 								dns.clouly.in/{userId}
 							</p>
 						</div>
 
 						{copied === "dot" ? (
-							<CopyCheck className="size-5 text-green-500" />
+							<CopyCheck className="size-4 text-green-500" />
 						) : (
 							<Copy
-								className="size-5 cursor-pointer text-muted-foreground hover:text-foreground transition"
+								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
 								onClick={() =>
 									handleCopy(`dns.clouly.in/${userId}`, "dot")
 								}

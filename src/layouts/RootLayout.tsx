@@ -1,4 +1,5 @@
 import api from "@/api/api";
+import { Navbar } from "@/components/Navbar";
 import { useUserContext } from "@/context/Context";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
@@ -32,6 +33,7 @@ export default function RootLayout() {
 
 	return (
 		<div className="min-h-svh w-full bg-white dark:bg-neutral-950 text-white  px-5">
+			<Navbar />
 			<Outlet />
 		</div>
 	);

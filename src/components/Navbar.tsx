@@ -14,7 +14,7 @@ export function Navbar() {
 	return (
 		<NavigationMenu
 			viewport={isMobile}
-			className="fixed top-0 left-0 max-w-full z-50 py-2 mx-auto"
+			className="fixed  top-0 left-0  min-w-full z-50 py-2"
 		>
 			<NavigationMenuList className="flex-wrap">
 				<NavigationMenuItem>
@@ -22,7 +22,9 @@ export function Navbar() {
 						asChild
 						className={navigationMenuTriggerStyle()}
 					>
-						<Link to="/">Home</Link>
+						<Link to="/" className="text-sm md:text-base">
+							Home
+						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
@@ -30,7 +32,9 @@ export function Navbar() {
 						asChild
 						className={navigationMenuTriggerStyle()}
 					>
-						<Link to="/dashboard">Dashboard</Link>
+						<Link to="/dashboard" className="text-sm md:text-base">
+							Dashboard
+						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
@@ -38,7 +42,9 @@ export function Navbar() {
 						asChild
 						className={navigationMenuTriggerStyle()}
 					>
-						<Link to="/profile">Profile</Link>
+						<Link to="/profile" className="text-sm md:text-base">
+							Profile
+						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
 			</NavigationMenuList>

@@ -17,18 +17,6 @@ export default function Dashboard() {
 	}
 	return (
 		<div className="w-full my-4">
-			<div className="flex sticky top-5 right-5  w-full justify-end items-center mb-4 space-x-2">
-				<Link to={"/profile"}>
-					<Button>
-						<User />
-						Profile
-					</Button>
-				</Link>
-				<Button variant={"destructive"} onClick={handleLogout}>
-					Logout
-					<LogOut />
-				</Button>
-			</div>
 			<div className="flex items-center max-w-3xl mx-auto justify-center flex-col gap-5 mt-10">
 				<div className="ml-auto">
 					<Button

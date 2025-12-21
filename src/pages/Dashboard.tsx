@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function Dashboard() {
 	const [active, setActive] = useState<"denyList" | "allowList">("denyList");
 	return (
-		<div className="w-full my-4">
+		<div className="w-full py-8">
 			<div className="flex items-center max-w-3xl mx-auto justify-center flex-col gap-5 mt-10">
 				<div className="ml-auto">
 					<Button

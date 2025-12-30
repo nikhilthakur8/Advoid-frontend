@@ -28,7 +28,11 @@ export default function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function handleSelectChange(value: string) {
-		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over HTTPS: https://dns.clouly.in/${userId}\nDNS over TLS: dns.clouly.in/${userId}\n\nProvide step-by-step instructions.`;
+		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over HTTPS: https://dns.clouly.in/${
+			userId ? userId : ""
+		}\nDNS over TLS: dns.clouly.in/${
+			userId ? userId : ""
+		}\n\nProvide step-by-step instructions.`;
 		const encodedPrompt = encodeURIComponent(prompt);
 		const url = `https://chat.openai.com/?prompt=${encodedPrompt}`;
 		window.open(url, "_blank");

@@ -12,12 +12,9 @@ import {
 export default function Home() {
 	const { user } = useUserContext();
 	const userId = user?.id;
-
 	const [copied, setCopied] = useState<"doh" | "dot" | null>(null);
 
 	function handleCopy(text: string, type: "doh" | "dot") {
-		if (!userId) return;
-
 		navigator.clipboard.writeText(text);
 		toast.success("Copied to clipboard!");
 		setCopied(type);
@@ -28,10 +25,10 @@ export default function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function handleSelectChange(value: string) {
-		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over HTTPS: https://dns.clouly.in/${
-			userId ? userId : ""
+		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over HTTPS: \nDNS over TLS: ${
+			userId ? `https://${userId}.dns.clouly.in` : "https://dns.clouly.in"
 		}\nDNS over TLS: ${
-			userId ? userId + "." : "" + "dns.clouly.in"
+			userId ? `${userId}.dns.clouly.in` : "dns.clouly.in"
 		}\n\nProvide step-by-step instructions.`;
 		const encodedPrompt = encodeURIComponent(prompt);
 		const url = `https://chat.openai.com/?prompt=${encodedPrompt}`;
@@ -97,7 +94,9 @@ export default function Home() {
 								DNS over HTTPS
 							</p>
 							<p className="text-base font-mono">
-								https://dns.clouly.in/{userId}
+								{userId
+									? `https://dns.clouly.in/${userId}`
+									: "https://dns.clouly.in"}
 							</p>
 						</div>
 
@@ -108,7 +107,9 @@ export default function Home() {
 								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
 								onClick={() =>
 									handleCopy(
-										`https://dns.clouly.in/${userId}`,
+										userId
+											? `https://dns.clouly.in/${userId}`
+											: "https://dns.clouly.in",
 										"doh"
 									)
 								}
@@ -123,7 +124,9 @@ export default function Home() {
 								DNS over TLS
 							</p>
 							<p className="text-base font-mono">
-								dns.clouly.in/{userId}
+								{userId
+									? `${userId}.dns.clouly.in`
+									: "dns.clouly.in"}
 							</p>
 						</div>
 
@@ -133,7 +136,12 @@ export default function Home() {
 							<Copy
 								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
 								onClick={() =>
-									handleCopy(`dns.clouly.in/${userId}`, "dot")
+									handleCopy(
+										userId
+											? `${userId}.dns.clouly.in`
+											: "dns.clouly.in",
+										"dot"
+									)
 								}
 							/>
 						)}

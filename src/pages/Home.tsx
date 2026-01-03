@@ -12,9 +12,9 @@ import {
 export default function Home() {
 	const { user } = useUserContext();
 	const userId = user?.id;
-	const [copied, setCopied] = useState<"doh" | "dot" | null>(null);
+	const [copied, setCopied] = useState<"doh" | "dot" | "ipv4" | null>(null);
 
-	function handleCopy(text: string, type: "doh" | "dot") {
+	function handleCopy(text: string, type: "doh" | "dot" | "ipv4") {
 		navigator.clipboard.writeText(text);
 		toast.success("Copied to clipboard!");
 		setCopied(type);
@@ -25,7 +25,7 @@ export default function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function handleSelectChange(value: string) {
-		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over HTTPS: ${
+		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over IPV4 is 80.225.222.130\nDNS over HTTPS: ${
 			userId ? `https://${userId}.dns.clouly.in` : "https://dns.clouly.in"
 		}\nDNS over TLS: ${
 			userId ? `${userId}.dns.clouly.in` : "dns.clouly.in"
@@ -87,6 +87,29 @@ export default function Home() {
 				</div>
 
 				<div className="divide-y">
+					{/* DNS over HTTPS */}
+					<div className="flex items-center justify-between px-4 py-3">
+						<div>
+							<p className="text-sm text-muted-foreground">
+								IPV4
+							</p>
+							<p className="text-base font-mono">
+								{"80.225.222.130"}
+							</p>
+						</div>
+
+						{copied === "ipv4" ? (
+							<CopyCheck className="size-4 text-green-500" />
+						) : (
+							<Copy
+								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
+								onClick={() =>
+									handleCopy("80.225.222.130", "ipv4")
+								}
+							/>
+						)}
+					</div>
+
 					{/* DNS over HTTPS */}
 					<div className="flex items-center justify-between px-4 py-3">
 						<div>

@@ -25,7 +25,7 @@ export default function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function handleSelectChange(value: string) {
-		const prompt = `Tell me how to configure DNS on ${value} for DNS over HTTPS and DNS over TLS using this following endpoints:\n\nDNS over IPV4 is 80.225.222.130\nDNS over HTTPS: ${
+		const prompt = `Tell me how to configure DNS on ${value} using this following endpoints:\n\nDNS over IPV4 is 80.225.222.130\nDNS over HTTPS: ${
 			userId ? `https://${userId}.dns.clouly.in` : "https://dns.clouly.in"
 		}\nDNS over TLS: ${
 			userId ? `${userId}.dns.clouly.in` : "dns.clouly.in"

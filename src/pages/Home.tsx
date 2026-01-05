@@ -25,7 +25,7 @@ export default function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function handleSelectChange(value: string) {
-		const prompt = `Tell me how to configure DNS on ${value} using this following endpoints:\n\nDNS over IPV4 is 80.225.222.130\nDNS over HTTPS: ${
+		const prompt = `Tell me how to configure DNS on ${value} using this following endpoints:\n\nDNS over IPV4 is 80.225.203.166\nDNS over HTTPS: ${
 			userId ? `https://${userId}.dns.clouly.in` : "https://dns.clouly.in"
 		}\nDNS over TLS: ${
 			userId ? `${userId}.dns.clouly.in` : "dns.clouly.in"
@@ -94,7 +94,7 @@ export default function Home() {
 								IPV4
 							</p>
 							<p className="text-base font-mono">
-								{"80.225.222.130"}
+								{"80.225.203.166"}
 							</p>
 						</div>
 
@@ -104,7 +104,7 @@ export default function Home() {
 							<Copy
 								className="size-4 cursor-pointer text-muted-foreground hover:text-foreground transition"
 								onClick={() =>
-									handleCopy("80.225.222.130", "ipv4")
+									handleCopy("80.225.203.166", "ipv4")
 								}
 							/>
 						)}

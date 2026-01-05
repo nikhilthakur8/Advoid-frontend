@@ -1,5 +1,6 @@
 import ProtectedLayout from "@/layouts/ProtectedLayout";
 import RootLayout from "@/layouts/RootLayout";
+import Admin from "@/pages/Admin";
 import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
 					{
 						path: "/dashboard",
 						element: <Dashboard />,
+					},
+					{
+						path: "/admin",
+						element: <Admin />,
 					},
 				],
 			},

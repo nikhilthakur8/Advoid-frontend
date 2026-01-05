@@ -37,8 +37,9 @@ export default function Register() {
 	async function onSubmit(data: FormData) {
 		setLoading(true);
 		try {
-			await api.post("/auth/signup", data);
-			toast.success("Registration successful! Please log in.");
+			const resp = await api.post("/auth/signup", data);
+			toast.success("Registration successful!");
+			localStorage.setItem("ADVOID_SESSION", resp.data.token);
 			navigate(redirectUrl);
 		} catch (error: unknown) {
 			if (isAxiosError(error)) {

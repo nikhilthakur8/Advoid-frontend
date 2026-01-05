@@ -5,12 +5,13 @@ import {
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { useUserContext } from "@/context/Context";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
 
 export function Navbar() {
 	const isMobile = useIsMobile();
-
+	const { user } = useUserContext();
 	return (
 		<NavigationMenu
 			viewport={isMobile}
@@ -37,6 +38,7 @@ export function Navbar() {
 						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
+
 				<NavigationMenuItem>
 					<NavigationMenuLink
 						asChild
@@ -47,6 +49,18 @@ export function Navbar() {
 						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
+				{user && user.role.toLocaleLowerCase() === "admin" && (
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}
+						>
+							<Link to="/admin" className="text-sm md:text-base">
+								Admin
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+				)}
 			</NavigationMenuList>
 		</NavigationMenu>
 	);

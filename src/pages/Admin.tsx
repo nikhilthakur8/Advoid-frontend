@@ -31,7 +31,7 @@ export default function Admin() {
 		};
 		isThrottled.current = true;
 		const eventSource = new EventSource(
-			`${import.meta.env.VITE_API_BASE_URL}/user/watch-logs?token=${token}`
+			`${import.meta.env.VITE_API_BASE_URL}/admin/watch-logs?token=${token}`
 		);
 		eventSource.onmessage = (event) => {
 			const newLog = JSON.parse(event.data);

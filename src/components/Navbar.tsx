@@ -49,18 +49,22 @@ export function Navbar() {
 						</Link>
 					</NavigationMenuLink>
 				</NavigationMenuItem>
-				{user && user.role.toLocaleLowerCase() === "admin" && (
-					<NavigationMenuItem>
-						<NavigationMenuLink
-							asChild
-							className={navigationMenuTriggerStyle()}
-						>
+				<NavigationMenuItem>
+					<NavigationMenuLink
+						asChild
+						className={navigationMenuTriggerStyle()}
+					>
+						{user && user.role.toLocaleLowerCase() === "admin" ? (
 							<Link to="/admin" className="text-sm md:text-base">
 								Admin
 							</Link>
-						</NavigationMenuLink>
-					</NavigationMenuItem>
-				)}
+						) : (
+							<Link to="/logs" className="text-sm md:text-base">
+								Logs
+							</Link>
+						)}
+					</NavigationMenuLink>
+				</NavigationMenuItem>
 			</NavigationMenuList>
 		</NavigationMenu>
 	);

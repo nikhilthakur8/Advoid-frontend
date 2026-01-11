@@ -11,7 +11,7 @@ import { Loader } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function Admin() {
+export default function Logs() {
 	type Logs = {
 		_id: string;
 		timestamp: string;
@@ -28,10 +28,12 @@ export default function Admin() {
 		if (isThrottled.current) {
 			toast.error("Please wait a moment before trying again.");
 			return;
-		};
+		}
 		isThrottled.current = true;
 		const eventSource = new EventSource(
-			`${import.meta.env.VITE_API_BASE_URL}/user/watch-logs?token=${token}`
+			`${
+				import.meta.env.VITE_API_BASE_URL
+			}/user/watch-logs?token=${token}`
 		);
 		eventSource.onmessage = (event) => {
 			const newLog = JSON.parse(event.data);
@@ -52,18 +54,6 @@ export default function Admin() {
 	}
 	return (
 		<div className="max-w-5xl mx-auto py-8 mt-10 space-y-6">
-			<div>
-				<p>Your Admin Access Token is :</p>
-				<p
-					className="break-all w-fit active:select-all border p-2 rounded mt-2"
-					onClick={() => {
-						navigator.clipboard.writeText(token || "");
-						toast.success("Copied to clipboard!");
-					}}
-				>
-					{token}
-				</p>
-			</div>
 			<div className="text-right">
 				<Button
 					onClick={handleWatchLiveLogs}
@@ -91,7 +81,6 @@ export default function Admin() {
 							<TableHead>Action</TableHead>
 							<TableHead>Time Stamp</TableHead>
 							<TableHead>Type</TableHead>
-							<TableHead>User Id</TableHead>
 						</TableRow>
 					</TableHeader>
 
@@ -99,11 +88,18 @@ export default function Admin() {
 						{logs.map((item, index) => (
 							<TableRow key={item._id} className="*:px-4 *:py-3">
 								<TableCell>{logs.length - index}.</TableCell>
-								<TableCell>{item.domain}</TableCell>
-								<TableCell>{item.action ? "Allowed" : "Blocked"}</TableCell>
-								<TableCell>{new Date(item.timestamp).toDateString()}</TableCell>
+								<TableCell className="max-w-sm break-all">{item.domain}</TableCell>
+								<TableCell
+									className={
+										!item.action ? "text-red-700 font-semibold" : ""
+									}
+								>
+									{item.action ? "Allowed" : "Blocked"}
+								</TableCell>
+								<TableCell>
+									{new Date(item.timestamp).toDateString()}
+								</TableCell>
 								<TableCell>{item.type}</TableCell>
-								<TableCell>{item.userId}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

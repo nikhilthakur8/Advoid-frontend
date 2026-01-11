@@ -4,6 +4,7 @@ import Admin from "@/pages/Admin";
 import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import Logs from "@/pages/Logs";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
 import { createBrowserRouter } from "react-router-dom";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
 					{
 						path: "/admin",
 						element: <Admin />,
+					},
+					{
+						path: "/logs",
+						element: <Logs />,
 					},
 				],
 			},

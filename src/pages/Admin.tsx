@@ -99,7 +99,7 @@ export default function Admin() {
 						{logs.map((item, index) => (
 							<TableRow key={item._id} className="*:px-4 *:py-3">
 								<TableCell>{logs.length - index}.</TableCell>
-								<TableCell>{item.domain}</TableCell>
+								<TableCell className="max-w-sm break-all whitespace-normal">{item.domain}</TableCell>
 								<TableCell>{item.action ? "Allowed" : "Blocked"}</TableCell>
 								<TableCell>{new Date(item.timestamp).toDateString()}</TableCell>
 								<TableCell>{item.type}</TableCell>

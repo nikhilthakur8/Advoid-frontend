@@ -88,7 +88,7 @@ export default function Logs() {
 						{logs.map((item, index) => (
 							<TableRow key={item._id} className="*:px-4 *:py-3">
 								<TableCell>{logs.length - index}.</TableCell>
-								<TableCell className="max-w-sm break-all">{item.domain}</TableCell>
+								<TableCell className="max-w-sm break-all whitespace-normal">{item.domain}</TableCell>
 								<TableCell
 									className={
 										!item.action ? "text-red-700 font-semibold" : ""
